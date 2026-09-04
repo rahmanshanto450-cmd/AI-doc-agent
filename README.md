@@ -95,44 +95,73 @@ AI-doc-agent/
 ├── LICENSE
 └── .gitignore
 
-# How Rag It Works
-When a document is uploaded, it goes through the following pipeline:
-PDF
- │
- ▼
-Load document
- │
- ▼
-Split into chunks
- │
- ▼
-Generate embeddings
- │
- ▼
-Store embeddings in ChromaDB
+## How RAG Works
 
-When the user asks a question:
-User Question
- │
- ▼
-Semantic Search
- │
- ▼
-Retrieve relevant chunks
- │
- ▼
-Build context
- │
- ▼
-Send context + question to LLM
- │
- ▼
-Generate grounded answer
- │
- ▼
-Return answer + sources
+AI Doc Agent uses **Retrieval-Augmented Generation (RAG)** to answer questions based on the contents of uploaded documents.
 
-The model is instructed to answer using the retrieved document context rather than relying on outside knowledge.
+```mermaid
+flowchart TB
+
+    subgraph INGEST["📄 Document Ingestion"]
+        A[Upload PDF]
+        B[Extract Text]
+        C[Split into Chunks]
+        D[Generate Embeddings]
+        E[(ChromaDB)]
+        
+        A --> B --> C --> D --> E
+    end
+
+    subgraph QUERY["💬 Question Answering"]
+        F[User Question]
+        G[Semantic Search]
+        H[Relevant Chunks]
+        I[Build Context]
+        J[LLM]
+        K[Grounded Answer]
+
+        F --> G
+        G --> H
+        H --> I
+        I --> J
+        J --> K
+    end
+
+    E --> G
+```
+
+### The process
+
+**1. Ingest the document**
+
+The uploaded PDF is converted into text, split into smaller chunks, and transformed into vector embeddings. These embeddings are stored in ChromaDB.
+
+**2. Retrieve relevant information**
+
+When a user asks a question, the system performs a semantic search against ChromaDB and retrieves the most relevant document chunks.
+
+**3. Generate the answer**
+
+The retrieved chunks are used as context for the LLM. The model generates an answer based on that context rather than relying solely on its general knowledge.
+
+### Question Answering
+
+```mermaid
+flowchart LR
+    A[User Question] --> B[Search ChromaDB]
+    B --> C[Retrieve Relevant Chunks]
+    C --> D[Build Context]
+    D --> E[LLM]
+    E --> F[Answer]
+```
+
+The process works in two stages:
+
+1. **Document ingestion** — The PDF is loaded, split into chunks, converted into embeddings, and stored in ChromaDB.
+2. **Question answering** — The user's question is used to find relevant chunks in ChromaDB. Those chunks are provided to the LLM as context to generate the answer.
+
+
+
 
 # Local Setup
 1. Clone the repository
