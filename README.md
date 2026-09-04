@@ -72,30 +72,28 @@ Document Processing
 - PyPDFLoader
 - RecursiveCharacterTextSplitter
 
-# Project Structure
+## Project Structure
 
+```text
 AI-doc-agent/
-│
 ├── backend/
 │   ├── main.py
-│   │
 │   ├── rag/
 │   │   ├── ingest.py
 │   │   ├── vectorstore.py
 │   │   ├── retrieve.py
 │   │   ├── generator.py
 │   │   └── pipeline.py
-│   │
 │   ├── data/
 │   └── chroma_db/
 │
 ├── frontend/
 │   └── app.py
 │
-├── venv/
-├── README.md
 ├── requirements.txt
-└── LICENSE
+├── README.md
+├── LICENSE
+└── .gitignore
 
 # How Rag It Works
 When a document is uploaded, it goes through the following pipeline:
